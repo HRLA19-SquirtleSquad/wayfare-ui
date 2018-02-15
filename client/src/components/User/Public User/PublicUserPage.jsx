@@ -1,8 +1,8 @@
 import 'babel-polyfill';
 import React from 'react';
 import axios from 'axios';
-import '../UserInfo.css'
-import url from '../../../config'
+import url from '../../../config';
+import './PublicUserPage.css';
 
 class PublicUserPage extends React.Component {
   constructor (props) {
@@ -26,6 +26,7 @@ class PublicUserPage extends React.Component {
     });
     const reviews = reviewsData.data.rows;
     const info = data.data.rows[0];
+    console.log('review dattaaa', reviews)
     this.setState({ 
       name: info.name,
       city: info.city,
@@ -39,26 +40,37 @@ class PublicUserPage extends React.Component {
 
   render () {
     return (
-      <div className="container" >
-        <div className="card" >
+      <div className="d-flex justify-content-center container" >
+        <div className="card public" >
           <h1>{this.state.name}</h1>
-          <img className="img-fluid profile-pic" src={this.state.img} alt=""/>
+          <img className="row d-flex justify-content-around  img-fluid profile-pic" src={this.state.img} alt=""/>
           <p>City: {this.state.city}</p>
           <p>Bio: {this.state.bio}</p>
         </div>
-        <div>
-          <h1>inside reviews box</h1>
+        <div className="wireframe">
+          <div className="reviews-box wireframe">
           <p>Host Rating: {this.state.hostRating}</p>
           <p>Guest Rating: {this.state.guestRating}</p>
+          </div>
+          <div className=" wireframe">
           <p>Reviews</p>
-          <ul className="list-group-flush">
-            {this.state.reviews.map(review => {
-              return <li className="list-group-item" key={review.id} > {review.review} </li>
+          <div className="d-flex justify-content-start">
+          <ul className=" list-group-flush reviews-list">
+            {this.state.reviews.map(review  => {
+              return <li className="list-group-item" key={review.id} ><em>{review.commentor} : </em> {review.review} </li>
             })}
           </ul>
+          </div>
+          </div>
         </div>
       </div>
     )
+  }
+}
+
+function mapStateToProps (state) {
+  return {
+    user_data: state.user_data
   }
 }
 
